@@ -1,1 +1,38 @@
+#include <iostream>
+#include <cmath>
 
+// Функция вычисления значения f(x) = (x1)^2 + 3(x2)^2 + cos(x1+x2)
+double f(double x1, double x2) {
+    return pow(x1, 2) + 3 * pow(x2, 2) + cos(x1 + x2);
+}
+
+// Метод покоординатного спуска для поиска оптимума функции
+void coordinateDescent() {
+    double epsilon = 0.0001;
+    double alpha = 0.1;
+    double x1 = 1.0;
+    double x2 = 1.0;
+
+    while (true) {
+        double prevX1 = x1;
+        double prevX2 = x2;
+
+        // Обновление x1
+        x1 = prevX1 - alpha * (2 * prevX1 - sin(prevX1 + prevX2));
+        // Обновление x2
+        x2 = prevX2 - alpha * (6 * prevX2 - sin(prevX1 + prevX2));
+
+        if (fabs(f(prevX1, prevX2) - f(x1, x2)) < epsilon) {
+            break;
+        }
+    }
+
+    std::cout << "Оптимальное значение x1: " << x1 << std::endl;
+    std::cout << "Оптимальное значение x2: " << x2 << std::endl;
+    std::cout << "Значение функции в оптимуме: " << f(x1, x2) << std::endl;
+}
+
+int main() {
+    coordinateDescent();
+    return 0;
+}
