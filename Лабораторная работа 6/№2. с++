@@ -1,1 +1,47 @@
+#include <iostream>
+#include <cmath>
 
+// Функция вычисления значения f(x) = 7(x1)^2 + 2x1x2 + 5(x2)^2 + x1 - 10x2
+double f(double x1, double x2) {
+    return 7 * pow(x1, 2) + 2 * x1 * x2 + 5 * pow(x2, 2) + x1 - 10 * x2;
+}
+
+// Градиент функции f(x)
+void gradient(double x1, double x2, double& gradX1, double& gradX2) {
+    gradX1 = 14 * x1 + 2 * x2 + 1;
+    gradX2 = 2 * x1 + 10 * x2 - 10;
+}
+
+// Метод наискорейшего спуска для поиска оптимума функции
+void steepestDescent() {
+    double epsilon = 0.0001;
+    double alpha = 0.01;
+    double x1 = 1.0;
+    double x2 = 1.0;
+
+    while (true) {
+        double gradX1, gradX2;
+        gradient(x1, x2, gradX1, gradX2);
+
+        double prevX1 = x1;
+        double prevX2 = x2;
+
+        // Обновление x1
+        x1 = prevX1 - alpha * gradX1;
+        // Обновление x2
+        x2 = prevX2 - alpha * gradX2;
+
+        if (sqrt(pow(gradX1, 2) + pow(gradX2, 2)) < epsilon) {
+            break;
+        }
+    }
+
+    std::cout << "Оптимальное значение x1: " << x1 << std::endl;
+    std::cout << "Оптимальное значение x2: " << x2 << std::endl;
+    std::cout << "Значение функции в оптимуме: " << f(x1, x2) << std::endl;
+}
+
+int main() {
+    steepestDescent();
+    return 0;
+}
