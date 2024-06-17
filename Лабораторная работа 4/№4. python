@@ -1,1 +1,33 @@
+import numpy as np
 
+# Функция для решения системы линейных уравнений методом прогонки
+def solve_tridiagonal(A, b):
+    n = len(A)
+    alpha = [0] * n
+    beta = [0] * n
+    x = [0] * n
+
+    alpha[0] = A[0][1] / A[0][0]
+    beta[0] = b[0] / A[0][0]
+
+    for i in range(1, n):
+        alpha[i] = A[i][i+1] / (A[i][i] - A[i][i-1] * alpha[i-1])
+        beta[i] = (b[i] + A[i][i-1] * beta[i-1]) / (A[i][i] - A[i][i-1] * alpha[i-1])
+
+    x[n-1] = beta[n-1]
+    for i in range(n-2, -1, -1):
+        x[i] = alpha[i] * x[i+1] + beta[i]
+
+    return x
+
+A = np.array([[11, 9, 0, 0, 0],
+              [1, -8, 1, 0, 0],
+              [0, -2, -11, 5, 0],
+              [0, 0, 3, -14, 7],
+              [0, 0, 0, 8, 10]])
+b = np.array([-114, 81, -8, -38, 144])
+
+x = solve_tridiagonal(A.copy(), b.copy())
+
+for i in range(len(x)):
+    print(f'x{i+1} = {x[i]}')
