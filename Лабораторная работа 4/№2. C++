@@ -1,1 +1,40 @@
+#include <iostream>
+#include <vector>
 
+// Функция для вычисления определителя матрицы 3x3
+double determinant(std::vector<std::vector<double>> matrix) {
+    return matrix[0][0] * (matrix[1][1]*matrix[2][2] - matrix[1][2]*matrix[2][1]) -
+           matrix[0][1] * (matrix[1][0]*matrix[2][2] - matrix[1][2]*matrix[2][0]) +
+           matrix[0][2] * (matrix[1][0]*matrix[2][1] - matrix[1][1]*matrix[2][0]);
+}
+
+// Функция для решения системы уравнений методом Крамера
+std::vector<double> solveKramer(std::vector<std::vector<double>> A, std::vector<double> B) {
+    double detA = determinant(A);
+    std::vector<double> X;
+
+    for (int i = 0; i < A.size(); i++) {
+        std::vector<std::vector<double>> Ai = A;
+        for (int j = 0; j < A.size(); j++) {
+            Ai[j][i] = B[j];
+        }
+        X.push_back(determinant(Ai) / detA);
+    }
+
+    return X;
+}
+
+int main() {
+    std::vector<std::vector<double>> A = {{5, -2, -1},
+                                          {2, -1, -1},
+                                          {2, -4, -8}};
+    std::vector<double> B = {0, -1, 1};
+
+    std::vector<double> X = solveKramer(A, B);
+
+    for (int i = 0; i < X.size(); i++) {
+        std::cout << "x" << i+1 << " = " << X[i] << std::endl;
+    }
+
+    return 0;
+}
