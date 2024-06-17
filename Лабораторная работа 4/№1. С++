@@ -1,1 +1,43 @@
+#include <iostream>
+#include <vector>
 
+// Функция для решения системы линейных уравнений методом Гаусса
+std::vector<double> solveGauss(std::vector<std::vector<double>> A, std::vector<double> b) {
+    int n = A.size();
+    
+    for (int i = 0; i < n; i++) {
+        double div = A[i][i];
+        for (int j = i; j < n; j++) {
+            A[i][j] /= div;
+        }
+        b[i] /= div;
+
+        for (int k = 0; k < n; k++) {
+            if (k != i) {
+                double mult = A[k][i];
+                for (int j = i; j < n; j++) {
+                    A[k][j] -= mult * A[i][j];
+                }
+                b[k] -= mult * b[i];
+            }
+        }
+    }
+
+    return b;
+}
+
+int main() {
+    std::vector<std::vector<double>> A = {{-1, 8, 0, 5},
+                                          {6, -6, 2, 4},
+                                          {9, -5, -6, 4},
+                                          {-5, 0, -9, 1}};
+    std::vector<double> b = {-60, -10, 65, 18};
+
+    std::vector<double> x = solveGauss(A, b);
+
+    for (int i = 0; i < x.size(); i++) {
+        std::cout << "x" << i+1 << " = " << x[i] << std::endl;
+    }
+
+    return 0;
+}
