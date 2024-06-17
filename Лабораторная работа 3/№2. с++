@@ -1,1 +1,72 @@
+#include <iostream>
+#include <cmath>
 
+double f(double x) {
+    return exp(-2 * x) * sin(7 * x);
+}
+
+// Метод прямоугольников
+double rectangleMethod(double a, int n) {
+    double h = a / n;
+    double sum = 0.0;
+    for (int i = 0; i < n; i++) {
+        sum += f((i + 0.5) * h);
+    }
+    return h * sum;
+}
+
+// Метод трапеций
+double trapezoidalMethod(double a, int n) {
+    double h = a / n;
+    double sum = 0.5 * (f(0) + f(a));
+    for (int i = 1; i < n; i++) {
+        sum += f(i * h);
+    }
+    return h * sum;
+}
+
+// Метод Симпсона
+double simpsonsMethod(double a, int n) {
+    double h = a / n;
+    double sum = f(0) + f(a);
+    for (int i = 1; i < n; i += 2) {
+        sum += 4 * f(i * h);
+    }
+    for (int i = 2; i < n - 1; i += 2) {
+        sum += 2 * f(i * h);
+    }
+    return h / 3 * sum;
+}
+
+int main() {
+    double a = 100; // В качестве бесконечности возьмем большое число, например, 100.
+    int n = 10; // Начальное количество интервалов
+    double desiredError = 1e-6;
+    
+    // Цикл для повышения точности до заданной погрешности
+    double result_rect = rectangleMethod(a, n);
+    double result_trap = trapezoidalMethod(a, n);
+    double result_simpson = simpsonsMethod(a, n);
+    
+    while (true) {
+        n *= 2; // Удваиваем количество интервалов
+        double new_result_rect = rectangleMethod(a, n);
+        double new_result_trap = trapezoidalMethod(a, n);
+        double new_result_simpson = simpsonsMethod(a, n);
+        
+        if (std::abs(new_result_rect - result_rect) < desiredError &&
+            std::abs(new_result_trap - result_trap) < desiredError &&
+            std::abs(new_result_simpson - result_simpson) < desiredError) {
+            std::cout << "Значение интеграла методом прямоугольников: " << new_result_rect << std::endl;
+            std::cout << "Значение интеграла методом трапеций: " << new_result_trap << std::endl;
+            std::cout << "Значение интеграла методом Симпсона: " << new_result_simpson << std::endl;
+            break;
+        }
+        
+        result_rect = new_result_rect;
+        result_trap = new_result_trap;
+        result_simpson = new_result_simpson;
+    }
+
+    return 0;
+}
