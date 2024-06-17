@@ -1,1 +1,15 @@
+sum = 0
+precision = 1e-6
+k = 1
+
+while True:
+    term = 7 / (2 ** (k - 1)) + ((-1) ** (k - 1)) / (2 * (3 ** (k - 1)))
+    sum += term
+    
+    if abs(term) < precision:
+        break
+    
+    k += 1
+
+print(f"Сумма числового ряда с точностью 1e-6: {sum}")
 
