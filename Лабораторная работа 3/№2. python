@@ -1,1 +1,49 @@
+import math
 
+def f(x):
+    return math.exp(-2 * x) * math.sin(7 * x)
+
+# Метод прямоугольников
+def rectangle_method(a, n):
+    h = a / n
+    s = sum(f((i + 0.5) * h) for i in range(n))
+    return h * s
+
+# Метод трапеций
+def trapezoidal_method(a, n):
+    h = a / n
+    s = 0.5 * (f(0) + f(a)) + sum(f(i * h) for i in range(1, n))
+    return h * s
+
+# Метод Симпсона
+def simpsons_method(a, n):
+    h = a / n
+    s = f(0) + f(a) + 4 * sum(f(i * h) for i in range(1, n, 2)) + 2 * sum(f(i * h) for i in range(2, n-1, 2))
+    return h / 3 * s
+
+a = 100  # В качестве бесконечности возьмем большое число, например, 100.
+n = 10  # Начальное количество интервалов
+desired_error = 1e-6
+
+# Цикл для повышения точности до заданной погрешности
+result_rect = rectangle_method(a, n)
+result_trap = trapezoidal_method(a, n)
+result_simpson = simpsons_method(a, n)
+
+while True:
+    n *= 2  # Удваиваем количество интервалов
+    new_result_rect = rectangle_method(a, n)
+    new_result_trap = trapezoidal_method(a, n)
+    new_result_simpson = simpsons_method(a, n)
+    
+    if abs(new_result_rect - result_rect) < desired_error and \\
+       abs(new_result_trap - result_trap) < desired_error and \\
+       abs(new_result_simpson - result_simpson) < desired_error:
+        print("Значение интеграла методом прямоугольников:", new_result_rect)
+        print("Значение интеграла методом трапеций:", new_result_trap)
+        print("Значение интеграла методом Симпсона:", new_result_simpson)
+break
+    
+    result_rect = new_result_rect
+    result_trap = new_result_trap
+    result_simpson = new_result_simpson
