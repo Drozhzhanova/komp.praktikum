@@ -1,1 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
 
+using namespace std;
+
+// Функция для вычисления интерполяционного многочлена Ньютона
+double newtonInterpolation(vector<double> &xi, vector<double> &yi, double x_star) {
+    int n = xi.size();
+    double result = 0.0;
+
+    // Расчет разделенных разностей
+    vector<vector<double>> dd(n, vector<double>(n));
+    for (int i = 0; i < n; i++) {
+        dd[i][0] = yi[i];
+    }
+    for (int j = 1; j < n; j++) {
+        for (int i = 0; i < n - j; i++) {
+            dd[i][j] = (dd[i + 1][j - 1] - dd[i][j - 1]) / (xi[i + j] - xi[i]);
+        }
+    }
+
+    // Вычисление значения интерполяционного многочлена в точке x*
+    double term = 1.0;
+    for (int j = 0; j < n; j++) {
+        result += dd[0][j] * term;
+        term *= (x_star - xi[j]);
+    }
+
+    return result;
+}
+
+int main() {
+    vector<double> xi = {0.1 * M_PI, 0.2 * M_PI, 0.3 * M_PI, 0.4 * M_PI};
+    vector<double> yi(xi.size());
+    for (int i = 0; i < xi.size(); i++) {
+        yi[i] = cos(xi[i]);
+    }
+    double x_star = 0.25 * M_PI;
+
+    // Вычисление значения интерполяционного многочлена в точке x*
+    double interpolationResult = newtonInterpolation(xi, yi, x_star);
+
+    // Вычисление погрешности интерполяции
+    double trueValue = cos(x_star);
+    double interpolationError = abs(interpolationResult - trueValue);
+
+    cout << "Значение интерполяционного многочлена в точке x*: " << interpolationResult << endl;
+    cout << "Значение погрешности интерполяции в точке x*: " << interpolationError << endl;
+
+    return 0;
+}
