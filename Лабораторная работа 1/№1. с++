@@ -1,1 +1,31 @@
+#include <iostream>
+#include <complex>
+#include <cmath>
 
+int main() 
+{
+    std::complex<double> z1(1, 1);
+    std::complex<double> z2(3, -1);
+    std::complex<double> z3(-1, 1);
+
+    // Сумма, разность, произведение, частное
+    std::complex<double> summ = z1 + z2;
+    std::complex<double> diff = z1 - z2;
+    std::complex<double> prod = z1 * z2;
+    std::complex<double> quot = z1 / z2;
+
+    // Четвертая степень
+    std::complex<double> z3_pow4 = pow(z3, 4);
+
+    // Корень третьей степени
+    std::complex<double> z3_cube_root = pow(z3, 1.0/3.0);
+
+    std::cout << "Summ: " << summ << std::endl;
+    std::cout << "Difference: " << diff << std::endl;
+    std::cout << "Product: " << prod << std::endl;
+    std::cout << "Quotient: " << quot << std::endl;
+    std::cout << "Fourth power of z3: " << z3_pow4 << std::endl;
+    std::cout << "Cube root of z3: " << z3_cube_root << std::endl;
+
+    return 0;
+}
