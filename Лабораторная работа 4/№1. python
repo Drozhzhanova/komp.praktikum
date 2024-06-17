@@ -1,1 +1,29 @@
+import numpy as np
 
+# Функция для решения системы линейных уравнений методом Гаусса
+def solve_gauss(A, b):
+    n = len(A)
+
+    for i in range(n):
+        div = A[i][i]
+        A[i] /= div
+        b[i] /= div
+
+        for k in range(n):
+            if k != i:
+                mult = A[k][i]
+                A[k] -= mult * A[i]
+                b[k] -= mult * b[i]
+
+    return b
+
+A = np.array([[-1, 8, 0, 5],
+              [6, -6, 2, 4],
+              [9, -5, -6, 4],
+              [-5, 0, -9, 1]])
+b = np.array([-60, -10, 65, 18])
+
+x = solve_gauss(A.copy(), b.copy())
+
+for i in range(len(x)):
+    print(f'x{i+1} = {x[i]}')
