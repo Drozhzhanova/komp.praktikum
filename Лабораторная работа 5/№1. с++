@@ -1,1 +1,27 @@
+#include <iostream>
+#include <vector>
 
+using namespace std;
+
+// Функция для вычисления кубического сплайна
+void cubicSpline(vector<double> &xi, vector<double> &yi, int N, double x_star) {
+    // Реализация кубического сплайна
+    // (здесь нужно вставить код для построения сплайна)
+
+    // После построения сплайна, вычисляем значение функции в точке x*
+    double result = 0.0; // Результат вычислений в точке x*
+
+    // Выводим результат
+    cout << "Значение функции в точке x* = " << x_star << " равно " << result << endl;
+}
+
+int main() {
+    vector<double> xi = {0.0, 1.0, 2.0, 3.0, 4.0};
+    vector<double> yi = {0.0, 0.5, 0.86603, 1.0, 0.86603};
+    int N = xi.size();
+    double x_star = 1.5;
+
+    cubicSpline(xi, yi, N, x_star);
+
+    return 0;
+}
