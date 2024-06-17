@@ -1,1 +1,15 @@
+import numpy as np
+from scipy.interpolate import CubicSpline
 
+# Даны табличные значения
+x = np.array([0.0, 1.0, 2.0, 3.0, 4.0])
+y = np.array([0.0, 0.5, 0.86603, 1.0, 0.86603])
+
+# Построение кубического сплайна с нулевой кривизной на концах
+cs = CubicSpline(x, y, bc_type='natural')
+
+# Вычисление значения функции в точке x = 1.5
+xstar = 1.5
+result = cs(xstar)
+
+print(f"Значение в точке x = 1.5: {result}")
