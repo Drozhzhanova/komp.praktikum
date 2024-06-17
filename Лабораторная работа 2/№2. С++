@@ -1,1 +1,72 @@
+#include <iostream>
+#include <cmath>
 
+struct Point3D {
+    double x, y, z;
+};
+
+struct Line {
+    Point3D point;
+    Point3D direction;
+};
+
+struct Plane {
+    double A, B, C, D;
+};
+
+// Функция для вычисления угла между прямой и плоскостью
+double angleBetweenLineAndPlane(Line line, Plane plane) {
+    double dotProduct = line.direction.x * plane.A + line.direction.y * plane.B + line.direction.z * plane.C;
+    double lineMagnitude = sqrt(line.direction.x * line.direction.x + line.direction.y * line.direction.y + line.direction.z * line.direction.z);
+    double planeNormalMagnitude = sqrt(plane.A * plane.A + plane.B * plane.B + plane.C * plane.C);
+
+    return acos(dotProduct / (lineMagnitude * planeNormalMagnitude));
+}
+
+// Функция для проверки параллельности прямой и плоскости
+bool areParallel(Line line, Plane plane) {
+    double dotProduct = line.direction.x * plane.A + line.direction.y * plane.B + line.direction.z * plane.C;
+    
+    return (dotProduct == 0);
+}
+
+// Функция для нахождения расстояния между прямой и плоскостью
+double distanceBetweenLineAndPlane(Line line, Plane plane) {
+    double numerator = abs(plane.A * line.point.x + plane.B * line.point.y + plane.C * line.point.z + plane.D);
+    double denominator = sqrt(plane.A * plane.A + plane.B * plane.B + plane.C * plane.C);
+
+    return numerator / denominator;
+}
+
+// Функция для нахождения точки пересечения прямой и плоскости
+Point3D intersectionPoint(Line line, Plane plane) {
+    double t = (-plane.D - plane.A * line.point.x - plane.B * line.point.y - plane.C * line.point.z) / (plane.A * line.direction.x + plane.B * line.direction.y + plane.C * line.direction.z);
+    Point3D intersection;
+    intersection.x = line.point.x + t * line.direction.x;
+    intersection.y = line.point.y + t * line.direction.y;
+    intersection.z = line.point.z + t * line.direction.z;
+    return intersection;
+}
+
+int main() {
+    // Генерация случайных параметров для прямой и плоскости
+    Line line = { {1.0, 2.0, 3.0}, {2.0, -1.0, 4.0} };
+    Plane plane = { 2.0, -3.0, 1.0, -5.0 };
+
+    // Вычисление угла между прямой и плоскостью
+    std::cout << "Угол между прямой и плоскостью: " << angleBetweenLineAndPlane(line, plane) << " радиан" << std::endl;
+
+    // Проверка параллельности прямой и плоскости
+    if (areParallel(line, plane)) {
+        std::cout << "Прямая и плоскость параллельны." << std::endl;
+        // Нахождение расстояния между прямой и плоскостью
+        std::cout << "Расстояние между прямой и плоскостью: " << distanceBetweenLineAndPlane(line, plane) << std::endl;
+    } else {
+        std::cout << "Прямая и плоскость не параллельны." << std::endl;
+        // Нахождение координат точки пересечения прямой и плоскости
+        Point3D intersection = intersectionPoint(line, plane);
+        std::cout << "Точка пересечения прямой и плоскости: (" << intersection.x << ", " << intersection.y << ", " << intersection.z << ")" << std::endl;
+    }
+
+    return 0;
+}
