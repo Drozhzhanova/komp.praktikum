@@ -1,1 +1,22 @@
+import math
 
+def func(k, x):
+    return ((-1)**k) / (math.sin(k*x) + 7 + k**2)
+
+def series_sum(x, epsilon):
+    k = 1
+    sum_current = func(k, x)
+    sum_previous = 0
+    
+    while abs(sum_current - sum_previous) >= epsilon:
+        sum_previous = sum_current
+        k += 1
+        sum_current += func(k, x)
+    
+    return sum_current
+
+x = 1.0  # Значение x
+epsilon = 1e-6  # Точность
+
+result = series_sum(x, epsilon)
+print(f"Сумма функционального ряда с точностью до 10^(-6): {result}")
