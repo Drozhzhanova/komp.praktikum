@@ -1,1 +1,24 @@
+import numpy as np
 
+# Функция для решения системы уравнений методом Крамера
+def solve_kramer(A, B):
+    detA = np.linalg.det(A)
+    X = []
+
+    for i in range(len(A)):
+        Ai = A.copy()
+        for j in range(len(A)):
+            Ai[j][i] = B[j]
+        X.append(np.linalg.det(Ai) / detA)
+
+    return X
+
+A = np.array([[5, -21],
+              [2, -1, -1],
+              [2, -4, -8]])
+B = np.array([0, -1, 1])
+
+X = solve.copy(), B.copy())
+
+for i in range(len(X)):
+    print(f'x{i+1} = {X[i]}')
