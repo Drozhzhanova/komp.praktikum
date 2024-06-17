@@ -1,1 +1,21 @@
+#include <iostream>
+#include <cmath>
 
+int main() {
+    double sum = 0.0;
+    double precision = 10^(-6);
+
+    for(int k = 1; ; k++) {
+        double term = 7.0 / pow(2, k - 1) + pow(-1, k - 1) / (2 * pow(3, k - 1));
+        sum += term;
+        
+        if (fabs(term) < precision) {
+            break;
+        }
+    }
+
+    std::cout.precision(10);
+    std::cout << "Сумма числового ряда с точностью 10^(-6): " << sum << std::endl;
+
+    return 0;
+}
