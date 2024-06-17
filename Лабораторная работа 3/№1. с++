@@ -1,1 +1,72 @@
+#include <iostream>
+#include <cmath>
 
+double f(double x) {
+    return pow(x, 4) / (7 + pow(x, 2));
+}
+
+// Метод прямоугольников
+double rectangleMethod(double a, double b, int n) {
+    double h = (b - a) / n;
+    double sum = 0.0;
+    for (int i = 0; i < n; i++) {
+        sum += f(a + (i + 0.5) * h);
+    }
+    return h * sum;
+}
+
+// Метод трапеций
+double trapezoidalMethod(double a, double b, int n) {
+    double h = (b - a) / n;
+    double sum = 0.5 * (f(a) + f(b));
+    for (int i = 1; i < n; i++) {
+        sum += f(a + i * h);
+    }
+    return h * sum;
+}
+
+// Метод Симпсона
+double simpsonsMethod(double a, double b, int n) {
+    double h = (b - a) / n;
+    double sum = f(a) + f(b);
+    for (int i = 1; i < n; i += 2) {
+        sum += 4 * f(a + i * h);
+    }
+    for (int i = 2; i < n - 1; i += 2) {
+        sum += 2 * f(a + i * h);
+    }
+    return h / 3 * sum;
+}
+
+int main() {
+    double a = 1.0, b = 2.0;
+    int n = 10; // Начальное количество интервалов
+    double desiredError = 1e-6;
+    
+    // Цикл для повышения точности до заданной погрешности
+    double result_rect = rectangleMethod(a, b, n);
+    double result_trap = trapezoidalMethod(a, b, n);
+    double result_simpson = simpsonsMethod(a, b, n);
+    
+    while (true) {
+        n *= 2; // Удваиваем количество интервалов
+        double new_result_rect = rectangleMethod(a, b, n);
+        double new_result_trap = trapezoidalMethod(a, b, n);
+        double new_result_simpson = simpsonsMethod(a, b, n);
+        
+        if (std::abs(new_result_rect - result_rect) < desiredError &&
+            std::abs(new_result_trap - result_trap) < desiredError &&
+            std::abs(new_result_simpson - result_simpson) < desiredError) {
+            std::cout << "Значение интеграла методом прямоугольников: " << new_result_rect << std::endl;
+            std::cout << "Значение интеграла методом трапеций: " << new_result_trap << std::endl;
+            std::cout << "Значение интеграла методом Симпсона: " << new_result_simpson << std::endl;
+            break;
+        }
+        
+        result_rect = new_result_rect;
+        result_trap = new_result_trap;
+        result_simpson = new_result_simpson;
+    }
+
+    return 0;
+}
