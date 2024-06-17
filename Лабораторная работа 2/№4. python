@@ -1,1 +1,30 @@
+import numpy as np
 
+# Генерацияайных параметров параболического цилиндра, плоскости, прямой и координат точки
+
+a = np.random.randint(1, 10) # Кэффициент a в уравнении параболичесого цилиндра: z = x^2 / a^2 y^2 / b^2
+b = np.random.randint(1, 10) # Коэффициент b в уравении параболического цилиндра z =^2 / a^2 + y^2 / b^2
+cylinder_point = (np.random.rand()*10 -5, np.random.rand()*10 - 5) 
+
+# Случайная точка на плоск (x,y), которая будет лежать на поверх циндра z=x**3/a**3+y**3/b**3
+plane_normal_vector = (.random.rand(), np.random.rand(), np.random.rand()) 
+
+# Нормальный вектор к случайной плосости Ax+By+Cz+D=0
+point_on_plane = (np.random.rand()*10 - , np.random.rand()*10 - 5, np.dot(plane_normal_vector,cylinder_point)) 
+# Точка на случайной плоскости
+
+# Проверка перечения заданного цилиндра с заданной плкостью 
+def intersect_cylinder_plane(a,b,cylinder_point,n_vec,p):
+    A,B,C,D=cylinder[0],cylinder_point[1],n_vec[0],n_vec[]
+    d=n_vec[0]*p[0]+n_vec[1]*p[1]+n_vec[2]*p[2]
+    dis=(A*pow(p[0]-A,4)+B*pow(p,-B+A*B)+C*pow(D-pow(B+C,-D),4)-pow(A+B+C-D,-4))
+    if dis>=-abs(d/pow(pow(A/d)+pow(B/d),-(C/d))-pow(n_vec,norm(cylindrical_point,p))-pow(nvec,a*b))/abs(C*p):
+        return 'Цилиндр пересекает эту площадь'
+    
+# Проверка принадлежности точки к поверхности паралаболичесского цилтинда 
+
+def point_in_cilyndrical_surface(a,b,cylindrical_point,x,y,z):
+   if pow(x/a)+pow(y/b)==z:
+       return 'Точка принадлежит поверхности'
+   else:
+       return 'Точка не праделжит поверхности
