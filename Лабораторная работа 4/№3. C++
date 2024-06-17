@@ -1,1 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
 
+std::vector<double> seidel(std::vector<std::vector<double>> A, std::vector<double> b, std::vector<double> initial_guess, double tolerance=0.01, int max_iterations=1000) {
+    int n = A.size();
+    std::vector<double> x = initial_guess;
+    std::vector<double> x_new(n);
+    
+    for (int iter = 0; iter < max_iterations; ++iter) {
+        for (int i = 0; i < n; ++i) {
+            double sum = 0.0;
+            for (int j = 0; j < n; ++j) {
+                if (j != i) {
+                    sum += A[i][j] * x[j];
+                }
+            }
+            x_new[i] = (b[i] - sum) / A[i][i];
+        }
+        
+        double error = 0.0;
+        for (int i = 0; i < n; ++i) {
+            error += std::pow(x_new[i] - x[i], 2);
+        }
+        
+        if (std::sqrt(error) < tolerance) {
+            return x_new;
+        }
+        
+        x = x_new;
+    }
+    
+    return x;
+}
+
+int main() {
+    std::vector<std::vector<double>> A = {{14, -4, -2, 3},
+                                          {-3, 23, -6, -9},
+                                          {-7, -8, 21, -5},
+                                          {2, -2, 8, 18}};
+    std::vector<double> b = {38, -195, -27, 142};
+    std::vector<double> initial_guess(A.size(), 0.0);
+    
+    std::vector<double> solution = seidel(A, b, initial_guess);
+    
+    std::cout << "Решение системы уравнений:" << std::endl;
+    for (size_t i = 0; i < solution.size(); ++i) {
+        std::cout << "x" << i + 1 << " = " << solution[i] << std::endl;
+    }
+    
+    return 0;
+}
