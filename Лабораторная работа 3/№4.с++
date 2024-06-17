@@ -1,1 +1,30 @@
+#include <iostream>
+#include <cmath>
 
+double func(int k, double x) {
+    return pow(-1, k) / (sin(k*x) + 7 + pow(k, 2));
+}
+
+double seriesSum(double x, double epsilon) {
+    int k = 1;
+    double sumCurrent = func(k, x);
+    double sumPrevious = 0;
+    
+    while (abs(sumCurrent - sumPrevious) >= epsilon) {
+        sumPrevious = sumCurrent;
+        k++;
+        sumCurrent += func(k, x);
+    }
+    
+    return sumCurrent;
+}
+
+int main() {
+    double x = 1.0; // Значение x
+    double epsilon = 1e-6; // Точность
+
+    double result = seriesSum(x, epsilon);
+    std::cout << "Сумма функционального ряда с точностью до 10^(-6): " << result << std::endl;
+
+    return 0;
+}
